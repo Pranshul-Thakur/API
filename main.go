@@ -1,7 +1,7 @@
 package main
 
 import (
-	"net/http"
+	"net/http" // providing http status codes like http.StatusOK, or http.statusnotfound
 
 	"github.com/gin-gonic/gin"
 )
@@ -37,6 +37,9 @@ func getalbumsbyid(c *gin.Context) { // gets a request and responds to fetch an 
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"}) // else if not found returns the error message album not found
 }
 
+// gin.H is short for json map
+
+// mini inbuilt database
 var albums = []album{ // data needed in the album slice
 	{ID: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
 	{ID: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
@@ -50,3 +53,16 @@ func main() { // sets up a gin https server on local host and route gets the req
 	router.GET("/albums/:id", getalbumsbyid) // gets a request at getalbumsbyid handler
 	router.Run("localhost:8081")             // starts the server on the given host for incoming requests
 }
+
+// GIN is a lightweight http framework used for following purposes :
+// creating servers : gin.Default()
+// handing routes : router.GET,POST
+// working on json : c.IndentedJSON
+// getting parameters : c.Param
+// using context : *gin.context -> allows to give access to request and response where c is a variable for the specified handler request
+// eg :
+// router.GET("/albums", getalbums)
+// getalbums(c *gin.Context)
+
+// The middleware router := gin.Defaukt() works in the following way Request -> Middleware -> Handler -> Response
+// Handler = https function that handles requests
